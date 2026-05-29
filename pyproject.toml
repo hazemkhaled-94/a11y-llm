@@ -1,0 +1,61 @@
+[project]
+name = "a11y-auditor"
+version = "0.1.0"
+description = ""
+license = {file = "LICENSE"}
+authors = [
+    {name = "Hazem Khaled",email = "hazem.mkhaled@icloud.com"}
+]
+readme = "README.md"
+requires-python = ">=3.12,<4.0"
+dependencies = [
+    "pytest",
+    "pytest-xdist",
+    "pytest-asyncio",
+    "allure-pytest",
+    "litellm",
+    "concurrent-log-handler",
+    "tenacity",
+    "pydantic",
+    "pydantic-settings",
+    "pytest-playwright-axe"
+]
+
+[tool.poetry]
+package-mode = false
+packages = [
+    { include = "llm", from = "src" },
+    { include = "utils", from = "src" },
+    { include = "web", from = "src" },
+    { include = "tests" }
+]
+
+[tool.poetry.group.dev.dependencies]
+ruff = "*"
+mypy = "*"
+black = "*"
+isort = "*"
+flake8 = "*"
+pre-commit = "*"
+pip-audit = "*"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "session"
+asyncio_default_test_loop_scope = "session"
+log_cli = true
+log_cli_level = "INFO"
+
+[tool.mypy]
+python_version = "3.12"
+mypy_path = "src"
+files = ["src", "tests"]
+namespace_packages = true
+explicit_package_bases = true
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

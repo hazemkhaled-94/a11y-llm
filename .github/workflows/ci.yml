@@ -1,0 +1,82 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+      - master
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    env:
+      AUDITOR_LLM_API_KEY: ${{ secrets.AUDITOR_LLM_API_KEY }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+        with:
+          version: latest
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+
+      - name: Install dependencies
+        run: poetry install --with dev
+
+      - name: Lint
+        run: poetry run ruff check src tests
+
+      - name: Type check
+        run: poetry run mypy src tests
+
+      - name: Validate WCAG criteria JSON
+        run: python -m json.tool src/utils/wcag/criteria.json > /dev/null
+
+      - name: Compile check
+        run: poetry run python -m compileall src tests
+
+      - name: Unit tests (always)
+        run: poetry run pytest tests/base/wcag/test_repository.py -q
+
+      - name: Dependency audit
+        run: poetry run pip-audit
+
+      - name: Install Playwright browser (smoke prereq)
+        if: env.AUDITOR_LLM_API_KEY != ''
+        run: poetry run playwright install chromium
+
+      - name: Smoke test (optional)
+        if: env.AUDITOR_LLM_API_KEY != ''
+        env:
+          AUDITOR_LLM_API_KEY: ${{ env.AUDITOR_LLM_API_KEY }}
+          AUDITOR_LLM_MODEL: ${{ vars.AUDITOR_LLM_MODEL }}
+          AUDITOR_LLM_URL: ${{ vars.AUDITOR_LLM_URL }}
+          PROJECT_ROOT_DIR: .
+          LOG_LEVEL: INFO
+          LOG_FORMAT: json
+          LOG_SINK: stdout
+          LOG_ROOT_DIR: logs
+          LOG_FILE: ci.log
+          LOG_ROTATE_MAX_BYTES: 5242880
+          LOG_ROTATE_BACKUP_COUNT: 3
+          LOG_SERVICE_NAME: a11y-auditor-ci
+          ALLURE_ENABLED: true
+          ALLURE_ROOT_DIR: allure
+          ALLURE_RESULTS_SUBDIR: results
+          ALLURE_REPORT_SUBDIR: report
+          ALLURE_CLEAN_RESULTS: true
+          PW_HEADLESS: true
+          PW_SLOW_MO_MS: 0
+          PW_LAUNCH_TIMEOUT_MS: 30000
+          PW_ACTION_TIMEOUT_MS: 10000
+          PW_NAVIGATION_TIMEOUT_MS: 20000
+        run: poetry run pytest tests/base/test_mars_smoke.py
