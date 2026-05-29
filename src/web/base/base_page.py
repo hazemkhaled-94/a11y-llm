@@ -139,11 +139,6 @@ class BasePage:
         Returns:
             dict[str, Any]: The extracted data as a dictionary.
         """
-        self.logger.info(
-            "Extracting data from element with JS extractor."
-        )
         data = await locator.evaluate(js_extractor)
-        self.logger.debug(
-            f"Extracted data: {data}"
-        )
+        self.logger.debug("Extracted data: %s", data)
         return data

@@ -9,6 +9,7 @@ import allure
 import pytest
 from playwright.async_api import BrowserContext
 from playwright.async_api import Page
+from tqdm import tqdm  # type: ignore
 
 from llm.connector import Connector
 from llm.models import ExtractedElement
@@ -79,7 +80,14 @@ async def get_elements_for_wcag_criterion(
         )
 
     extracted_elements: list[ExtractedElement] = []
-    for index, locator in enumerate(locators):
+    extraction_progress = tqdm(
+        locators,
+        desc=f"Extracting {criterion_key} elements",
+        unit="el",
+        leave=False,
+        disable=None,
+    )
+    for index, locator in enumerate(extraction_progress):
         raw_html = await page.extract_element_data(locator, js_extractor)
         if (
             criterion_key == "3.1.2"

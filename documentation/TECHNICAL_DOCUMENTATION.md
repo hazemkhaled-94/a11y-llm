@@ -90,12 +90,12 @@ real values. `.env` is git-ignored; `.env.example` is the committed template.
 | `PW_NAVIGATION_TIMEOUT_MS` | `20000` | Default navigation timeout. |
 | `PW_IGNORE_HTTPS_ERRORS` | `true` | Ignore TLS errors (test targets). |
 
-> Note: the LLM variables are mandatory and fail fast via
-> `EnvironmentStore.get_required` if missing or blank. Logging/Allure/Playwright
-> variables are optional and fall back to the defaults above. The defaults shown
-> for `PW_*` are the fixture defaults in
-> [`tests/base/conftest.py`](../tests/base/conftest.py); the committed
-> `.env.example` ships headless-friendly values for CI.
+The LLM variables are mandatory and fail fast via
+`EnvironmentStore.get_required` when missing or blank. The logging, Allure, and
+Playwright variables are optional and fall back to the defaults above; the
+`PW_*` defaults shown are the fixture defaults in
+[`tests/base/conftest.py`](../tests/base/conftest.py), while the committed
+`.env.example` ships headless-friendly values for CI.
 
 ## 5. Component reference
 
@@ -243,8 +243,8 @@ The shipped Mars smoke flow (`tests/base/test_mars_smoke.py`) runs 2.4.4,
 
 ## 9. Security and data handling
 
-This is a test framework, not a hosted service; the following are the controls
-that are relevant at this scope.
+The security-relevant surface is small: secrets, the content sent to the LLM,
+and log hygiene.
 
 - **Secrets** — the LLM API key (and any target credentials) are read only from
   the environment. `.env` is git-ignored; only `.env.example` (placeholders) is
