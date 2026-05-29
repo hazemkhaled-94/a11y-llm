@@ -74,7 +74,7 @@ Project-level documentation:
 
 ## Runtime and tool requirements
 
-- Python `>=3.12,<4.0`
+- Python `>=3.12,<3.14` (bounded by `litellm`'s supported range)
 - Poetry
 - Playwright browser binaries (Chromium)
 - Allure CLI (for local report generation/serving)
@@ -105,42 +105,19 @@ Project-level documentation:
    poetry run playwright install chromium
    ```
 
-## Environment variables used by implementation
+## Environment variables
 
-### LLM
+Only the LLM connection variables are **required** — the framework fails fast on
+startup if any is missing:
 
 - `AUDITOR_LLM_API_KEY`
 - `AUDITOR_LLM_MODEL`
 - `AUDITOR_LLM_URL`
 
-### Logging
-
-- `PROJECT_ROOT_DIR`
-- `LOG_LEVEL`
-- `LOG_FORMAT` (`text` or `json`)
-- `LOG_SINK` (`stdout`, `file`, `both`)
-- `LOG_ROOT_DIR`
-- `LOG_FILE`
-- `LOG_ROTATE_MAX_BYTES`
-- `LOG_ROTATE_BACKUP_COUNT`
-- `LOG_SERVICE_NAME`
-
-### Allure
-
-- `ALLURE_ENABLED`
-- `ALLURE_ROOT_DIR`
-- `ALLURE_RESULTS_SUBDIR`
-- `ALLURE_REPORT_SUBDIR`
-- `ALLURE_CLEAN_RESULTS`
-
-### Playwright fixtures
-
-- `PW_HEADLESS`
-- `PW_SLOW_MO_MS`
-- `PW_LAUNCH_TIMEOUT_MS`
-- `PW_ACTION_TIMEOUT_MS`
-- `PW_NAVIGATION_TIMEOUT_MS`
-- `PW_IGNORE_HTTPS_ERRORS`
+Everything else (logging, Allure, and Playwright settings) is optional and ships
+with working defaults in `.env.example`. Copy that file and adjust only what you
+need; the full variable reference is in
+`documentation/TECHNICAL_DOCUMENTATION.md`.
 
 ## Quality checks
 
@@ -179,6 +156,12 @@ poetry run pytest tests/base/test_mars_smoke.py -vv -rs
 Notes:
 
 - Tests are async (`pytest.mark.asyncio`).
+- The Mars smoke flow needs the required LLM variables and the Chromium browser. The unit tests under `tests/base/wcag/` and `tests/llm/` run with no external setup (no browser, network, or LLM):
+
+  ```bash
+  poetry run pytest tests/base/wcag/test_repository.py tests/base/wcag/test_empty_extraction_behavior.py tests/llm/test_wcag_evaluator_parse.py -vv
+  ```
+
 - Session-scoped Playwright/browser fixtures are defined in `tests/base/conftest.py`.
 - `tests/conftest.py` re-exports base fixtures so all suites use one fixture stack.
 
@@ -202,10 +185,22 @@ Important operational detail:
 
 - Run Allure commands from repository root so `allure/results` resolves correctly.
 
-## Known implementation constraints
+## Reliability and known limitations
 
-- `web.base.BasePage.run_axe_audit` currently returns `{}` (placeholder stub).
-- `WCAGEvaluator` attempts to recover partial model output by adding `MANUAL_REVIEW` placeholders, but marks batch status as `ERROR` in those cases.
+Reliability behavior (by design):
+
+- Connector calls and response validation are each retried up to 3 times;
+  malformed model output is rejected rather than trusted.
+- If the model returns fewer results than the elements in a batch, the evaluator
+  fills the missing element IDs with `MANUAL_REVIEW` placeholders and marks the
+  batch status `ERROR`. This makes incomplete model coverage fail the criterion
+  instead of passing silently.
+
+Known limitations:
+
+- `web.base.BasePage.run_axe_audit` is a placeholder that returns `{}`. The
+  Allure attachment pipeline is already wired so a real Axe-core integration can
+  drop in without changing callers.
 
 ## Extending the project
 
@@ -230,3 +225,7 @@ Important operational detail:
 
 - `documentation/` holds the architecture, technical, and management references; start at `documentation/README.md`.
 - Package-level READMEs under `src/` and `tests/` are the authoritative implementation-level API/flow documentation.
+
+## License
+
+Released under the MIT License. See [LICENSE](LICENSE).

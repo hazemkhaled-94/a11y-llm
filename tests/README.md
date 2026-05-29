@@ -16,9 +16,8 @@ Test suite for end-to-end accessibility smoke checks.
 The canonical fixture setup is implemented in `tests/base/conftest.py`:
 
 - pytest hooks for logging and Allure session setup
-- session browser launch args configuration
-- per-test context fixture
-- per-test page fixture (provided by pytest-playwright-asyncio)
+- session-scoped Playwright runtime, browser, and launch-args fixtures
+- per-test context and page fixtures
 - per-test logger and WCAG criteria fixtures
 
 `tests/conftest.py` imports all base fixtures so every suite gets the same runtime stack.

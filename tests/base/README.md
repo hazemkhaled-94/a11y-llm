@@ -16,11 +16,11 @@ This package centralizes framework concerns so concrete suites stay focused on t
 - Allure setup and metadata writing
 - criterion-driven WCAG extraction and LLM evaluation
 
-The WCAG stack uses a context-driven orchestration flow:
+The WCAG stack uses a registry-driven orchestration flow:
 
-- one shared audit context object per test
+- a typed criterion registry executed in a deterministic order
 - criterion-specific execution through declarative configs
-- delayed failure aggregation so all criteria run before final fail
+- delayed failure aggregation so all criteria run before the final fail
 - criterion-specific enrichment modules where needed (2.4.9)
 
 Criterion-specific behavior (for example WCAG 2.4.9) lives in
@@ -31,9 +31,9 @@ Criterion-specific behavior (for example WCAG 2.4.9) lives in
 Implemented in `tests/base/conftest.py`:
 
 - `pytest_configure` / `pytest_sessionstart` hooks for logging and Allure lifecycle setup
-- `browser_type_launch_args` (session)
+- `playwright_runtime`, `browser`, `browser_type_launch_args` (session-scoped)
 - `context` (per test)
-- `page` (provided by pytest-playwright-asyncio)
+- `page` (per test)
 - `test_logger` (per test correlation-scoped logger)
 - `wcag_criteria` (criteria configuration loader)
 

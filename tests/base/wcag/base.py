@@ -121,7 +121,19 @@ def _handle_empty_extraction(
     criterion_key: str,
     empty_behavior: EmptyBehavior,
 ) -> None:
-    """Mark criterion as skipped when extraction returns no elements."""
+    """Resolve an empty extraction according to the criterion's policy.
+
+    Args:
+        criterion_key: WCAG criterion key, used for the evidence attachment.
+        empty_behavior: Policy applied when no elements were extracted:
+            ``"skip"`` marks the criterion skipped (inconclusive), ``"pass"``
+            treats the absence of elements as compliant, and ``"fail"`` treats
+            it as a violation.
+
+    Raises:
+        AssertionError: If ``empty_behavior`` is ``"fail"``.
+        Skipped: If ``empty_behavior`` is ``"skip"``.
+    """
     message = (
         "No elements were extracted for criterion "
         f"{criterion_key}. Policy={empty_behavior}."
@@ -131,6 +143,11 @@ def _handle_empty_extraction(
         name=f"wcag-{criterion_key}-empty-extraction",
         attachment_type=allure.attachment_type.TEXT,
     )
+
+    if empty_behavior == "fail":
+        raise AssertionError(message)
+    if empty_behavior == "pass":
+        return
     pytest.skip(message)
 
 

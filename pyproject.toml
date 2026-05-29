@@ -1,19 +1,20 @@
 [project]
 name = "a11y-auditor"
 version = "0.1.0"
-description = ""
+description = "LLM-assisted WCAG accessibility smoke-testing framework built on Playwright, pytest, and Allure."
 license = {file = "LICENSE"}
 authors = [
     {name = "Hazem Khaled",email = "hazem.mkhaled@icloud.com"}
 ]
 readme = "README.md"
-requires-python = ">=3.12,<4.0"
+keywords = ["accessibility", "a11y", "wcag", "playwright", "pytest", "llm", "allure"]
+requires-python = ">=3.12,<3.14"
 dependencies = [
     "pytest",
     "pytest-xdist",
     "pytest-asyncio",
     "allure-pytest",
-    "litellm",
+    "litellm>=1.83.10,<1.84",
     "concurrent-log-handler",
     "tenacity",
     "pydantic",

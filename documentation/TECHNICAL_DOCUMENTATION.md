@@ -43,7 +43,7 @@ documentation/    This documentation set
 
 ## 3. Runtime requirements
 
-- Python `>=3.12,<4.0`
+- Python `>=3.12,<3.14` (bounded by `litellm`'s supported range)
 - [Poetry](https://python-poetry.org/) for dependency management
 - Playwright browser binaries (Chromium): `poetry run playwright install chromium`
 - Allure CLI (for local report generation/serving)
@@ -286,14 +286,11 @@ poetry run pytest \
 - `BasePage.run_axe_audit` returns `{}` (placeholder); the Allure attachment
   pipeline is already wired so a real Axe-core integration can drop in.
 - WCAG coverage is intentionally limited to four criteria.
-- Empty extraction currently results in a skipped criterion regardless of the
-  configured `empty_behavior`; the policy is recorded in the evidence message.
-  Honoring the policy (fail/pass/skip) is a small, well-isolated enhancement.
 
 ## 12. Roadmap
 
 - **Short term** — integrate real Axe-core results; expand the prioritized
-  WCAG criteria set; make `empty_behavior` actionable.
+  WCAG criteria set.
 - **Mid term** — resolve `NEEDS_CONTEXT` via parent/sibling traversal;
   deterministic baseline suites with a mocked LLM for CI; quality metrics.
 - **Long term** — multi-page crawling; versioned, reviewable rule packages;

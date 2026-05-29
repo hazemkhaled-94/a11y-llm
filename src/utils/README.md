@@ -6,7 +6,7 @@ Shared infrastructure utilities used across test execution and runtime services.
 
 - `core`: environment loading and typed environment access helpers
 - `logging`: structured logging, sink/format control, and correlation IDs
-- `reporting`: Allure directory setup and command helper APIs
+- `reporting`: Allure directory setup and configuration
 - `wcag/criteria.json`: criterion configuration used by smoke execution
 
 ## Important implementation note

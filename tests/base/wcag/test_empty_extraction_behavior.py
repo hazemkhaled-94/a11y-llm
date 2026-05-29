@@ -15,16 +15,30 @@ from utils.logging import Logger
 from web.base.base_page import BasePage
 
 
-@pytest.mark.parametrize("empty_behavior", ["skip", "pass", "fail"])
-def test_handle_empty_extraction_marks_criterion_skipped(
-    empty_behavior: str,
-) -> None:
-    """No extracted elements should produce a skipped criterion outcome."""
+def test_handle_empty_extraction_skip_marks_skipped() -> None:
+    """The 'skip' policy should mark the criterion as skipped."""
     with pytest.raises(pytest.skip.Exception):
         wcag_base._handle_empty_extraction(
             criterion_key="2.4.4",
-            empty_behavior=cast(Any, empty_behavior),
+            empty_behavior="skip",
         )
+
+
+def test_handle_empty_extraction_fail_raises_assertion() -> None:
+    """The 'fail' policy should raise an assertion (criterion failure)."""
+    with pytest.raises(AssertionError):
+        wcag_base._handle_empty_extraction(
+            criterion_key="3.1.1",
+            empty_behavior="fail",
+        )
+
+
+def test_handle_empty_extraction_pass_does_not_raise() -> None:
+    """The 'pass' policy should return without raising (compliant)."""
+    wcag_base._handle_empty_extraction(
+        criterion_key="3.1.2",
+        empty_behavior="pass",
+    )
 
 
 @pytest.mark.asyncio
