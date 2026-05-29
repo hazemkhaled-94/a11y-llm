@@ -1,5 +1,5 @@
 [project]
-name = "a11y-auditor"
+name = "a11y-llm"
 version = "0.1.0"
 description = "LLM-assisted WCAG accessibility smoke-testing framework built on Playwright, pytest, and Allure."
 license = "MIT"
