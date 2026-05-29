@@ -1,1 +1,1 @@
-"""Test package for a11y-auditor."""
+"""Test package for a11y-llm."""

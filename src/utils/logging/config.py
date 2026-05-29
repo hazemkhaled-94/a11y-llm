@@ -217,7 +217,7 @@ class LoggingSettingsFactory:
             )
             log_file_name = self._env.get_optional(
                 "LOG_FILE",
-                default="a11y-auditor.log",
+                default="a11y-llm.log",
             )
 
         return LoggingSettings(
@@ -226,7 +226,7 @@ class LoggingSettingsFactory:
             log_sink=log_sink,
             service_name=self._env.get_optional(
                 "LOG_SERVICE_NAME",
-                default="a11y-auditor",
+                default="a11y-llm",
             ),
             logs_dir=logs_dir,
             log_file_name=log_file_name,

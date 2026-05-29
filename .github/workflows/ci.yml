@@ -77,7 +77,7 @@ jobs:
           LOG_FILE: ci.log
           LOG_ROTATE_MAX_BYTES: 5242880
           LOG_ROTATE_BACKUP_COUNT: 3
-          LOG_SERVICE_NAME: a11y-auditor-ci
+          LOG_SERVICE_NAME: a11y-llm-ci
           ALLURE_ENABLED: true
           ALLURE_ROOT_DIR: allure
           ALLURE_RESULTS_SUBDIR: results

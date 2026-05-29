@@ -1,6 +1,6 @@
 # Documentation
 
-Project documentation for `a11y-auditor`. Start with the root
+Project documentation for `a11y-llm`. Start with the root
 [README](../README.md) for setup and usage; this folder holds the deeper
 architecture, technical, and management references.
 

@@ -1,7 +1,7 @@
 # Architecture
 
 This document is the single source of truth for the architecture of
-`a11y-auditor`. It describes the system in layers, components, runtime
+`a11y-llm`. It describes the system in layers, components, runtime
 sequence, data contracts, and lifecycle, with diagrams that map directly to the
 code in [`src/`](../src) and [`tests/`](../tests).
 
@@ -12,7 +12,7 @@ code in [`src/`](../src) and [`tests/`](../tests).
 
 ## System context
 
-`a11y-auditor` is an asynchronous accessibility smoke-testing framework. A
+`a11y-llm` is an asynchronous accessibility smoke-testing framework. A
 Playwright-driven page object opens a target page; CSS/XPath selectors and
 JavaScript extractors (declared in
 [`src/utils/wcag/criteria.json`](../src/utils/wcag/criteria.json)) pull the DOM

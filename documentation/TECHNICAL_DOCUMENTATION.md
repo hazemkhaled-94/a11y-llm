@@ -1,13 +1,13 @@
 # Technical Documentation
 
-A complete technical reference for `a11y-auditor`, aligned with the current
+A complete technical reference for `a11y-llm`, aligned with the current
 implementation in [`src/`](../src) and [`tests/`](../tests). For diagrams see
 [ARCHITECTURE.md](ARCHITECTURE.md); for the management view see
 [MANAGEMENT_DOKUMENTATION.md](MANAGEMENT_DOKUMENTATION.md).
 
 ## 1. Overview
 
-`a11y-auditor` is an asynchronous accessibility smoke-testing framework. It
+`a11y-llm` is an asynchronous accessibility smoke-testing framework. It
 drives a target web page with Playwright, extracts the DOM evidence relevant to
 each WCAG criterion, evaluates that evidence with an LLM (through LiteLLM),
 validates the model output against strict Pydantic schemas, and attaches
@@ -74,10 +74,10 @@ real values. `.env` is git-ignored; `.env.example` is the committed template.
 | `LOG_FORMAT` | `json` | `text` or `json`. |
 | `LOG_SINK` | `stdout` | `stdout`, `file`, or `both`. |
 | `LOG_ROOT_DIR` | `logs` | Log directory (file sinks). |
-| `LOG_FILE` | `a11y-auditor.log` | Log file name (file sinks). |
+| `LOG_FILE` | `a11y-llm.log` | Log file name (file sinks). |
 | `LOG_ROTATE_MAX_BYTES` | `5242880` | Rotation size threshold. |
 | `LOG_ROTATE_BACKUP_COUNT` | `5` | Rotated files retained. |
-| `LOG_SERVICE_NAME` | `a11y-auditor` | `service` field in JSON logs. |
+| `LOG_SERVICE_NAME` | `a11y-llm` | `service` field in JSON logs. |
 | `ALLURE_ENABLED` | `true` | Enable Allure result emission. |
 | `ALLURE_ROOT_DIR` | `allure` | Allure root directory. |
 | `ALLURE_RESULTS_SUBDIR` | `results` | Raw results subdirectory. |

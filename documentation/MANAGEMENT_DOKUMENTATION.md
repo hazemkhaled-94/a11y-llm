@@ -1,6 +1,6 @@
 # Management-Dokumentation
 
-**Projekt:** a11y-auditor · **Version:** 0.1.0 · **Adressaten:** Fach- und
+**Projekt:** a11y-llm · **Version:** 0.1.0 · **Adressaten:** Fach- und
 Projektverantwortliche, QA, Betrieb
 
 Diese Dokumentation gibt einen kompakten, ehrlichen Überblick über Zweck,
@@ -10,7 +10,7 @@ Architekturdiagramme in [ARCHITECTURE.md](ARCHITECTURE.md) (Englisch).
 
 ## 1. Management Summary
 
-`a11y-auditor` ist ein automatisierter Prüfrahmen für digitale
+`a11y-llm` ist ein automatisierter Prüfrahmen für digitale
 Barrierefreiheit. Er verbindet Browser-Automatisierung mit KI-gestützter
 WCAG-Auswertung und erzeugt nachvollziehbare Testnachweise in Form von
 strukturierten Logs und Allure-Reports.
@@ -186,7 +186,7 @@ flowchart TB
 
 ## 12. Fazit
 
-a11y-auditor besitzt eine belastbare technische Grundarchitektur mit hoher
+a11y-llm besitzt eine belastbare technische Grundarchitektur mit hoher
 Transparenz und guter Erweiterbarkeit. Der nächste logische Schritt ist kein
 Neubau, sondern die strukturierte Skalierung des vorhandenen Fundaments entlang
 fachlicher Abdeckung, Betriebsreife und – falls für den Einsatzkontext

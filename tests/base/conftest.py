@@ -103,7 +103,7 @@ def pytest_sessionstart(session: pytest.Session) -> None:
     asyncio.run(
         write_environment_properties(
             {
-                "framework": "a11y-auditor",
+                "framework": "a11y-llm",
                 "python_version": platform.python_version(),
                 "platform": platform.platform(),
             }

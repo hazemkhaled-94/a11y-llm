@@ -1,4 +1,4 @@
-# a11y-auditor
+# a11y-llm
 
 Accessibility smoke-auditing framework that combines:
 
