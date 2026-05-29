@@ -6,13 +6,14 @@ from typing import Any, Iterator, Literal
 
 from pydantic import ValidationError
 
+from utils.logging.config import get_logger
+
 from .connector import CompletionClient
 from .models import (
     ElementEvaluationResult,
     WCAGEvaluationRequest,
     WCAGEvaluationResult,
 )
-from utils.logging.config import get_logger
 
 logger = get_logger(__name__)
 
@@ -51,10 +52,7 @@ class WCAGEvaluator:
 
     _VALIDATION_RETRY_ATTEMPTS = 3
 
-    def __init__(
-        self,
-        connector: CompletionClient
-    ) -> None:
+    def __init__(self, connector: CompletionClient) -> None:
         """Initialize the evaluator.
 
         Args:
@@ -211,7 +209,7 @@ class WCAGEvaluator:
                 wcag_rule_id=request.wcag_rule_id,
                 wcag_description=request.wcag_description,
                 rule_name=request.rule_name,
-                elements=request.elements[i: i + chunk_size],
+                elements=request.elements[i : i + chunk_size],
             )
 
     async def _evaluate_single_batch(
@@ -253,7 +251,7 @@ class WCAGEvaluator:
                     "json_schema": {
                         "name": "wcag_evaluation",
                         "schema": output_schema,
-                    }
+                    },
                 },
             )
 
@@ -264,9 +262,7 @@ class WCAGEvaluator:
                 content = raw_response.choices[0].message.content
                 last_content = content
                 if content is None:
-                    raise ValueError(
-                        "LLM returned an empty message content."
-                    )
+                    raise ValueError("LLM returned an empty message content.")
 
                 payload = self._normalize_response_payload(content)
                 return WCAGEvaluationResult.model_validate(payload)
@@ -316,10 +312,11 @@ class WCAGEvaluator:
         if not isinstance(parsed, dict):
             raise ValueError("LLM payload must be a JSON object or array.")
 
-        if (
-            "results" not in parsed
-            and {"element_id", "status", "reason"}.issubset(parsed)
-        ):
+        if "results" not in parsed and {
+            "element_id",
+            "status",
+            "reason",
+        }.issubset(parsed):
             return {
                 "status": "SUCCESS",
                 "results": [parsed],

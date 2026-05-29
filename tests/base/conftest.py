@@ -3,30 +3,35 @@
 from __future__ import annotations
 
 import asyncio
-from collections.abc import AsyncGenerator
-from collections.abc import Generator
-from dataclasses import dataclass
 import os
 import platform
+from collections.abc import AsyncGenerator, Generator
+from dataclasses import dataclass
 from typing import Any
 
 import pytest
 import pytest_asyncio
-from playwright.async_api import async_playwright
-from playwright.async_api import Browser
-from playwright.async_api import BrowserContext
-from playwright.async_api import Page
-from playwright.async_api import Playwright
+from playwright.async_api import (
+    Browser,
+    BrowserContext,
+    Page,
+    Playwright,
+    async_playwright,
+)
 
 from tests.base.wcag.repository import load_wcag_criteria
-from utils.logging import Logger
-from utils.logging import clear_correlation_id
-from utils.logging import configure_logging
-from utils.logging import get_logger
-from utils.logging import set_correlation_id
-from utils.reporting import configure_allure
-from utils.reporting import load_allure_config_from_environment
-from utils.reporting import write_environment_properties
+from utils.logging import (
+    Logger,
+    clear_correlation_id,
+    configure_logging,
+    get_logger,
+    set_correlation_id,
+)
+from utils.reporting import (
+    configure_allure,
+    load_allure_config_from_environment,
+    write_environment_properties,
+)
 
 
 @dataclass(frozen=True)

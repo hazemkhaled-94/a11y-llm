@@ -15,7 +15,7 @@ def test_parse_content_accepts_plain_json() -> None:
 
 def test_parse_content_accepts_fenced_json_without_tag() -> None:
     """Parses JSON wrapped in generic markdown code fences."""
-    payload = "```\n{\"results\": []}\n```"
+    payload = '```\n{"results": []}\n```'
     parsed = WCAGEvaluator._parse_content(payload)
     assert isinstance(parsed, dict)
     assert parsed["results"] == []
@@ -26,8 +26,8 @@ def test_parse_content_accepts_text_before_code_block() -> None:
     payload = (
         "Here is your evaluation output.\n"
         "```json\n"
-        "{\"results\": [{\"element_id\": \"1\", \"status\": \"PASS\", "
-        "\"reason\": \"ok\", \"confidence_score\": 0.9}]}\n"
+        '{"results": [{"element_id": "1", "status": "PASS", '
+        '"reason": "ok", "confidence_score": 0.9}]}\n'
         "```"
     )
     parsed = WCAGEvaluator._parse_content(payload)
@@ -39,8 +39,8 @@ def test_parse_content_accepts_text_wrapped_json_without_fences() -> None:
     """Parses embedded JSON surrounded by plain commentary text."""
     payload = (
         "Some commentary before JSON. "
-        "{\"results\": [{\"element_id\": \"x\", \"status\": \"FAIL\", "
-        "\"reason\": \"bad\", \"confidence_score\": 0.1}]} "
+        '{"results": [{"element_id": "x", "status": "FAIL", '
+        '"reason": "bad", "confidence_score": 0.1}]} '
         "Trailing commentary."
     )
     parsed = WCAGEvaluator._parse_content(payload)

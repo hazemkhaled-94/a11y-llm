@@ -35,6 +35,9 @@ jobs:
       - name: Lint
         run: poetry run ruff check src tests
 
+      - name: Format check
+        run: poetry run ruff format --check src tests
+
       - name: Type check
         run: poetry run mypy src tests
 

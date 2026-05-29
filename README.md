@@ -127,6 +127,12 @@ Run lint:
 poetry run ruff check src tests
 ```
 
+Check formatting (apply with `ruff format` instead of `--check`):
+
+```bash
+poetry run ruff format --check src tests
+```
+
 Run static typing:
 
 ```bash
@@ -137,6 +143,12 @@ Validate WCAG config JSON:
 
 ```bash
 python -m json.tool src/utils/wcag/criteria.json > /dev/null
+```
+
+Optionally install the git hooks so these run automatically before each commit:
+
+```bash
+poetry run pre-commit install
 ```
 
 ## Test execution

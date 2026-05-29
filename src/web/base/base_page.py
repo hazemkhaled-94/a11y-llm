@@ -4,8 +4,7 @@ from __future__ import annotations
 
 from typing import Any, Self
 
-from playwright.async_api import Locator
-from playwright.async_api import Page
+from playwright.async_api import Locator, Page
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
 from utils.logging import get_logger
@@ -41,9 +40,7 @@ class BasePage:
             ValueError: If PAGE_URL is not defined on the child.
         """
         if not self.PAGE_URL:
-            raise ValueError(
-                f"PAGE_URL missing for {self.__class__.__name__}"
-            )
+            raise ValueError(f"PAGE_URL missing for {self.__class__.__name__}")
 
         self.logger.info(
             "Navigating to: %s (timeout=%sms)",
@@ -94,8 +91,7 @@ class BasePage:
         return self
 
     async def run_axe_audit(
-        self,
-        context_name: str | None = None
+        self, context_name: str | None = None
     ) -> dict[str, Any]:
         """Inject and run Axe-core on the current page state.
 
@@ -110,8 +106,7 @@ class BasePage:
         return {}
 
     async def extract_elements_by_locator(
-        self,
-        selector: str
+        self, selector: str
     ) -> list[Locator]:
         """Extract DOM elements matching a specific selector.
 
@@ -125,9 +120,7 @@ class BasePage:
         return await self.page.locator(selector).all()
 
     async def extract_element_data(
-        self,
-        locator: Locator,
-        js_extractor: str
+        self, locator: Locator, js_extractor: str
     ) -> dict[str, Any]:
         """Extract relevant data from a given Locator.
 

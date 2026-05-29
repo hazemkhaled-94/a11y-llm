@@ -2,20 +2,21 @@
 
 from __future__ import annotations
 
+import json
 from typing import Any
 from urllib.parse import urljoin, urlparse
-import json
 
-import allure
 from playwright.async_api import BrowserContext
 from playwright.async_api import Error as PlaywrightError
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
-from llm.models import ExtractedElement
-from llm.models import WCAGEvaluationRequest
+import allure
+from llm.models import ExtractedElement, WCAGEvaluationRequest
 from llm.wcag_evaluator import WCAGEvaluator
-from tests.base.wcag.reporting import assert_llm_outcome_or_raise
-from tests.base.wcag.reporting import WCAGCriterionAllureReporter
+from tests.base.wcag.reporting import (
+    WCAGCriterionAllureReporter,
+    assert_llm_outcome_or_raise,
+)
 from utils.logging import Logger
 from web.base.base_page import BasePage
 
@@ -237,12 +238,12 @@ async def run_criterion_2_4_9(
                 continue
 
             if resolved_url not in destination_cache:
-                destination_cache[resolved_url] = (
-                    await _extract_destination_page_snapshot(
-                        browser_context,
-                        logger,
-                        resolved_url,
-                    )
+                destination_cache[
+                    resolved_url
+                ] = await _extract_destination_page_snapshot(
+                    browser_context,
+                    logger,
+                    resolved_url,
                 )
 
             destination_data = destination_cache[resolved_url]

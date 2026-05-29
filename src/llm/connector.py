@@ -6,11 +6,12 @@ import litellm
 from tenacity import (
     retry,
     stop_after_attempt,
-    wait_exponential
+    wait_exponential,
 )  # type: ignore
 
-from .config import LLMConfig, LLMConfigLoader
 from utils.logging.config import get_logger
+
+from .config import LLMConfig, LLMConfigLoader
 
 logger = get_logger(__name__)
 
@@ -84,11 +85,7 @@ class Connector:
             timeout=900,
             temperature=0.2,
             seed=200994,
-            extra_body={
-                "options": {
-                    "num_ctx": 131072
-                }
-            }
+            extra_body={"options": {"num_ctx": 131072}},
         )
 
         return cast(CompletionResponse, response)

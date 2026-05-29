@@ -2,10 +2,10 @@
 
 from __future__ import annotations
 
+import json
 import os
 from pathlib import Path
 from typing import Any
-import json
 
 from utils.logging import Logger
 
@@ -16,9 +16,7 @@ def _resolve_project_root(project_root: Path | str | None) -> Path:
         return Path(project_root).expanduser().resolve()
 
     env_root = (
-        os.getenv("PROJECT_ROOT")
-        or os.getenv("PROJECT_ROOT_DIR")
-        or ""
+        os.getenv("PROJECT_ROOT") or os.getenv("PROJECT_ROOT_DIR") or ""
     ).strip()
     if env_root:
         return Path(env_root).expanduser().resolve()

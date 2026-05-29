@@ -3,13 +3,12 @@
 from __future__ import annotations
 
 import asyncio
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
-import shutil
 from typing import Mapping
 
-from utils.core.environment import EnvironmentStore
-from utils.core.environment import get_environment_store
+from utils.core.environment import EnvironmentStore, get_environment_store
 
 
 @dataclass(frozen=True)
@@ -169,9 +168,7 @@ async def configure_allure(config: AllureConfig | None = None) -> AllureConfig:
         AllureConfig: Effective allure configuration.
     """
     configurator = (
-        ALLURE_CONFIGURATOR
-        if config is None
-        else AllureConfigurator(config)
+        ALLURE_CONFIGURATOR if config is None else AllureConfigurator(config)
     )
     return await asyncio.to_thread(configurator.configure)
 
@@ -190,9 +187,7 @@ async def write_environment_properties(
         Path | None: Output file path, or None when disabled.
     """
     configurator = (
-        ALLURE_CONFIGURATOR
-        if config is None
-        else AllureConfigurator(config)
+        ALLURE_CONFIGURATOR if config is None else AllureConfigurator(config)
     )
     return await asyncio.to_thread(
         configurator.write_environment_properties,

@@ -2,15 +2,17 @@
 
 from __future__ import annotations
 
-from typing import Any
 import json
+from typing import Any
 
-import allure
 import pytest
 
-from llm.models import ExtractedElement
-from llm.models import WCAGEvaluationRequest
-from llm.models import WCAGEvaluationResult
+import allure
+from llm.models import (
+    ExtractedElement,
+    WCAGEvaluationRequest,
+    WCAGEvaluationResult,
+)
 from tests.base.wcag.types import ElementEvaluationFailure
 
 

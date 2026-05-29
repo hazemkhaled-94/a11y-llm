@@ -2,8 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Any
-from typing import cast
+from typing import Any, cast
 
 import pytest
 from playwright.async_api import BrowserContext

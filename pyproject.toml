@@ -19,6 +19,7 @@ dependencies = [
     "tenacity>=9.0.0,<10.0.0",
     "pydantic>=2.0.0,<3.0.0",
     "pydantic-settings>=2.0.0,<3.0.0",
+    "playwright>=1.0.0,<2.0.0",
     "pytest-playwright-axe>=4.0.0,<5.0.0",
     "tqdm>=4.0.0,<5.0.0"
 ]
@@ -35,9 +36,6 @@ packages = [
 [tool.poetry.group.dev.dependencies]
 ruff = "*"
 mypy = "*"
-black = "*"
-isort = "*"
-flake8 = "*"
 pre-commit = "*"
 pip-audit = "*"
 
@@ -49,6 +47,12 @@ asyncio_default_fixture_loop_scope = "session"
 asyncio_default_test_loop_scope = "session"
 log_cli = true
 log_cli_level = "INFO"
+
+[tool.ruff]
+line-length = 79
+
+[tool.ruff.lint]
+select = ["E4", "E7", "E9", "F", "I", "W"]
 
 [tool.mypy]
 python_version = "3.12"

@@ -4,15 +4,16 @@ from __future__ import annotations
 
 from typing import Any
 
-import allure
 import pytest
-from playwright.async_api import BrowserContext
-from playwright.async_api import Page
+from playwright.async_api import BrowserContext, Page
 
-from tests.base.wcag import apply_unified_allure_naming
-from tests.base.wcag import create_wcag_evaluator
-from tests.base.wcag import run_and_attach_axe_audit
-from tests.base.wcag import run_configured_wcag_criteria
+import allure
+from tests.base.wcag import (
+    apply_unified_allure_naming,
+    create_wcag_evaluator,
+    run_and_attach_axe_audit,
+    run_configured_wcag_criteria,
+)
 from utils.logging import Logger
 from web.mars import MarsDemoPage
 

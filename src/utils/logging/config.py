@@ -2,21 +2,19 @@
 
 from __future__ import annotations
 
+import importlib
+import json
+import logging
+import sys
+import threading
 from contextvars import ContextVar, Token
 from dataclasses import dataclass
 from datetime import datetime, timezone
-import json
-import logging
 from pathlib import Path
-import sys
-import threading
-import importlib
 from typing import Any, cast
 from uuid import uuid4
 
-from utils.core.environment import EnvironmentStore
-from utils.core.environment import get_environment_store
-
+from utils.core.environment import EnvironmentStore, get_environment_store
 
 _ALLOWED_LOG_FORMATS = {"text", "json"}
 _ALLOWED_LOG_SINKS = {"stdout", "file", "both"}
@@ -192,9 +190,7 @@ class LoggingSettingsFactory:
             default="stdout",
         ).lower()
         if log_sink not in _ALLOWED_LOG_SINKS:
-            raise ValueError(
-                "LOG_SINK must be one of: stdout, file, both."
-            )
+            raise ValueError("LOG_SINK must be one of: stdout, file, both.")
 
         logs_dir: Path | None = None
         log_file_name: str | None = None
@@ -371,9 +367,7 @@ class LoggingConfigurator:
         """
         candidate = (log_sink or self._settings.log_sink).lower()
         if candidate not in _ALLOWED_LOG_SINKS:
-            raise ValueError(
-                "LOG_SINK must be one of: stdout, file, both."
-            )
+            raise ValueError("LOG_SINK must be one of: stdout, file, both.")
         return candidate
 
     def _get_stdout_handler(
