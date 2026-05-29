@@ -5,9 +5,9 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import allure
 import pytest
 
-import allure
 from llm.models import (
     ExtractedElement,
     WCAGEvaluationRequest,

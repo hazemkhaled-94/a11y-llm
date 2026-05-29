@@ -5,11 +5,11 @@ from __future__ import annotations
 import json
 from typing import Any
 
+import allure
 import pytest
 from playwright.async_api import BrowserContext, Page
 from tqdm import tqdm  # type: ignore
 
-import allure
 from llm.connector import Connector
 from llm.models import ExtractedElement, WCAGEvaluationRequest
 from llm.wcag_evaluator import WCAGEvaluator

@@ -4,10 +4,10 @@ from __future__ import annotations
 
 from typing import Any
 
+import allure
 import pytest
 from playwright.async_api import BrowserContext, Page
 
-import allure
 from tests.base.wcag import (
     apply_unified_allure_naming,
     create_wcag_evaluator,

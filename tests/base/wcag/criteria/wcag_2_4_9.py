@@ -6,11 +6,11 @@ import json
 from typing import Any
 from urllib.parse import urljoin, urlparse
 
+import allure
 from playwright.async_api import BrowserContext
 from playwright.async_api import Error as PlaywrightError
 from playwright.async_api import TimeoutError as PlaywrightTimeoutError
 
-import allure
 from llm.models import ExtractedElement, WCAGEvaluationRequest
 from llm.wcag_evaluator import WCAGEvaluator
 from tests.base.wcag.reporting import (
