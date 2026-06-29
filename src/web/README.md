@@ -1,28 +1,28 @@
-# web namespace package
+# web — Namespace-Package
 
-Page object layer for target web applications used in accessibility smoke tests.
+Page-Object-Schicht für die P20-Zielanwendung.
 
-## Structure
+## Struktur
 
-- `base`: reusable page object base class
-- `mars`: page object for the Deque University Mars demo
+- `base/` — wiederverwendbare Page-Object-Basisklasse
+- `p20/` — Page Objects für P20 (Login-Flow, Sucheingabe)
 
-## Packaging note
+## Packaging-Hinweis
 
-`web` is an implicit namespace package (no `web/__init__.py`).
-This works because `src` is added to `PYTHONPATH` in pytest config (`pythonpath = ["src"]`).
+`web` ist ein implizites Namespace-Package (kein `web/__init__.py`).
+Möglich, weil `src` in pytest-Config als `pythonpath` eingetragen ist.
 
-## Base behavior shared by all targets
+## Gemeinsames Verhalten (BasePage)
 
-`web.base.base_page.BasePage` provides:
+`web.base.base_page.BasePage` stellt bereit:
 
-- `navigate()` with timeout handling and logging
-- `wait_for_page_load()` (`domcontentloaded`)
-- element extraction by selector
-- element JS evaluation helper
-- `run_axe_audit()` placeholder hook (currently returns empty dict)
+- `navigate()` — Navigation mit Timeout-Behandlung und Logging
+- `wait_for_page_load()` — wartet auf `domcontentloaded`
+- `extract_elements_by_locator()` — Element-Extraktion per Selektor
+- `extract_element_data()` — JS-Evaluator-Helfer pro Element
+- `run_axe_audit()` — Platzhalter-Hook (gibt derzeit `{}` zurück)
 
-## Subpackage docs
+## Unterpackage-Dokumentation
 
-- `src/web/base/README.md`
-- `src/web/mars/README.md`
+- [src/web/base/README.md](base/README.md)
+- [src/web/p20/README.md](p20/README.md)

@@ -1,89 +1,87 @@
-# tests.base package
+# tests.base — Gemeinsame Test-Infrastruktur
 
-Shared async test infrastructure and reusable WCAG smoke orchestration.
+Geteilter async Test-Stack und wiederverwendbare WCAG-Smoke-Orchestrierung.
 
-## Modules
+## Module
 
-- `conftest.py`: canonical async fixture stack and pytest hooks
-- `wcag/`: dedicated WCAG package for orchestration and criterion modules
+- `conftest.py` — kanonischer async Fixture-Stack und pytest-Hooks
+- `wcag/` — dediziertes WCAG-Package für Orchestrierung und Kriterium-Module
 
-## Purpose
+## Zweck
 
-This package centralizes framework concerns so concrete suites stay focused on target page flows:
+Dieses Package zentralisiert Framework-Belange, sodass konkrete Suites auf
+Zielseiten-Flows fokussiert bleiben:
 
-- Playwright lifecycle (session/browser/context/page)
-- logging configuration and per-test correlation IDs
-- Allure setup and metadata writing
-- criterion-driven WCAG extraction and LLM evaluation
+- Playwright-Lebenszyklus (Session/Browser/Kontext/Page)
+- Logging-Konfiguration und per-Test-Korrelations-IDs
+- Allure-Setup und Metadaten-Schreiben
+- Kriteriengetriebene WCAG-Extraktion und LLM-Bewertung
 
-The WCAG stack uses a registry-driven orchestration flow:
+Der WCAG-Stack nutzt einen registry-getriebenen Orchestrierungsfluss:
 
-- a typed criterion registry executed in a deterministic order
-- criterion-specific execution through declarative configs
-- delayed failure aggregation so all criteria run before the final fail
-- criterion-specific enrichment modules where needed (2.4.9)
+- typisierte Kriterium-Registry in deterministischer Reihenfolge
+- kriterienspezifische Ausführung über deklarative Configs
+- verzögerte Fehleraggregation, sodass alle Kriterien laufen bevor final fehlgeschlagen wird
+- kriterienspezifische Anreicherungsmodule wo nötig (2.4.9)
 
-Criterion-specific behavior (for example WCAG 2.4.9) lives in
-`tests/base/wcag/criteria/`.
+## Async Fixture-Stack
 
-## Async fixture stack
+Implementiert in `tests/base/conftest.py`:
 
-Implemented in `tests/base/conftest.py`:
+- `pytest_configure` / `pytest_sessionstart` — Hooks für Logging- und Allure-Lebenszyklus
+- `playwright_runtime`, `browser`, `browser_type_launch_args` — session-scoped
+- `context` — per Test
+- `page` — per Test
+- `test_logger` — per Test, korrelationsgebundener Logger
+- `wcag_criteria` — Kriterien-Konfigurationsloader
 
-- `pytest_configure` / `pytest_sessionstart` hooks for logging and Allure lifecycle setup
-- `playwright_runtime`, `browser`, `browser_type_launch_args` (session-scoped)
-- `context` (per test)
-- `page` (per test)
-- `test_logger` (per test correlation-scoped logger)
-- `wcag_criteria` (criteria configuration loader)
+## Pytest-Hook-Verhalten
 
-## Pytest hook behavior
+- `pytest_configure` — setzt Allure-Ausgabeverzeichnis aus Laufzeit-Reporting-Config.
+- `pytest_sessionstart` — bereitet Allure-Verzeichnisse vor und schreibt Umgebungsmetadaten.
 
-- `pytest_configure`: automatically sets Allure output dir from runtime reporting config when Allure is enabled.
-- `pytest_sessionstart`: prepares Allure directories and writes environment metadata.
+## WCAG-Smoke-Basisverhalten
 
-## WCAG smoke base behavior
+`tests/base/wcag/base.py` stellt bereit:
 
-`tests/base/wcag/base.py` provides:
+- einheitliche Allure-Namens-Helfer
+- Kriterium-Extraktion aus `src/utils/wcag/criteria.json`
+- Evaluator-Erstellung (`WCAGEvaluator` + `Connector`)
+- Standard-Kriterium-Sequenz (`2.4.4`, `3.1.1`, `3.1.2`)
+- optionaler `2.4.9`-Spezialist-Runner mit Zielseiten-Anreicherung
+- per-Element Allure-Evidenz und strukturierte Fehlerzusammenfassungen
+- verzögerte Assertion-Aggregation, sodass ein fehlgeschlagenes Kriterium die anderen nicht stoppt
 
-- unified Allure naming helpers
-- criterion extraction from `src/utils/wcag/criteria.json`
-- evaluator creation (`WCAGEvaluator` + `Connector`)
-- default criterion sequence (`2.4.4`, `3.1.1`, `3.1.2`)
-- optional `2.4.9` specialized runner with destination-page enrichment
-- per-element Allure evidence and structured failure summaries
-- delayed assertion aggregation so one failing criterion does not stop remaining criteria
+## Allure-Schichttrennung
 
-Execution internals are intentionally concentrated in `base.py` to reduce deep call chains.
+- `tests/base/conftest.py` — Session-Setup und Metadaten-Schreiben via pytest-Hooks.
+- `tests/base/wcag/reporting.py` — per-Element WCAG-Ergebnis-Evidenz.
 
-## Allure layer separation
+Diese Schichten sind bewusst getrennt und duplizieren kein Verhalten.
 
-- `tests/base/conftest.py` handles session setup and metadata writing via pytest hooks.
-- `tests/base/wcag/reporting.py` handles per-element WCAG result evidence.
-
-These layers are intentionally separate and do not duplicate behavior.
-
-## Recommended pattern (async)
+## Empfohlenes Muster (async)
 
 ```python
 import pytest
 
-from tests.base.wcag import create_wcag_evaluator
-from tests.base.wcag import run_configured_wcag_criteria
-from web.mars import MarsDemoPage
+from tests.base.wcag import create_wcag_evaluator, run_configured_wcag_criteria
+from web.p20.login import LoginPage
 
 pytestmark = pytest.mark.asyncio
 
 
-async def test_example(page, context, test_logger, wcag_criteria) -> None:
-    page_obj = MarsDemoPage(page)
+async def test_beispiel(page, context, test_logger, wcag_criteria) -> None:
+    seite = LoginPage(page)
     evaluator = create_wcag_evaluator()
-    await page_obj.open()
+    await seite.navigate()
     await run_configured_wcag_criteria(
-        page_obj,
+        seite,
         evaluator,
         wcag_criteria,
         test_logger,
         context,
     )
 ```
+
+Für den vollständigen P20-Flow mit Login und Kriterium-2.4.9-Override
+siehe `tests/p20/test_searchinput_smoke.py`.

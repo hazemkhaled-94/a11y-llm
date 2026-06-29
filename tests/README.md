@@ -1,49 +1,49 @@
-# tests package
+# tests — Test-Suite
 
-Test suite for end-to-end accessibility smoke checks.
+End-to-End-Barrierefreiheits-Smoke-Tests für P20.
 
-## Structure
+## Struktur
 
-- `conftest.py`
-  - bridge fixture file
-  - re-exports fixtures from `tests.base.conftest`
-- `base/`
-  - shared test model, async fixture stack, WCAG smoke orchestration, managers
-  - dedicated `wcag/` package with criterion-specific modules
+- `conftest.py` — Bridge-Fixture-Datei; re-exportiert Fixtures aus `tests.base.conftest`
+- `base/` — geteilte Test-Infrastruktur, async Fixture-Stack, WCAG-Smoke-Orchestrierung
+- `p20/` — P20-spezifische Smoke-Tests
 
-## Fixture architecture
+## Fixture-Architektur
 
-The canonical fixture setup is implemented in `tests/base/conftest.py`:
+Die kanonische Fixture-Einrichtung ist in `tests/base/conftest.py` implementiert:
 
-- pytest hooks for logging and Allure session setup
-- session-scoped Playwright runtime, browser, and launch-args fixtures
-- per-test context and page fixtures
-- per-test logger and WCAG criteria fixtures
+- pytest-Hooks für Logging- und Allure-Session-Setup
+- Session-scoped Playwright-Runtime, Browser und Launch-Arg-Fixtures
+- Per-Test Kontext- und Page-Fixtures
+- Per-Test Logger und WCAG-Kriterien-Fixtures
 
-`tests/conftest.py` imports all base fixtures so every suite gets the same runtime stack.
+`tests/conftest.py` importiert alle Base-Fixtures, sodass jede Suite denselben Runtime-Stack erhält.
 
-## Collection rule
+## Kollektionsregel
 
-There is no class-inheritance collection gate in the active fixture stack.
-The current suite is function-based and async.
+Es gibt kein Klassen-Vererbungs-Gate im aktiven Fixture-Stack.
+Die aktuelle Suite ist funktionsbasiert und asynchron.
 
-## Main test entry points
+## Test-Einstiegspunkte
 
-- `tests/base/test_mars_smoke.py`
+- `tests/p20/test_searchinput_smoke.py` — P20-Smoke-Test (Browser + LLM erforderlich)
 
-## WCAG architecture overview
+## Unit-Tests (kein Browser, kein LLM)
 
-`tests/base/wcag/` is the dedicated WCAG package.
+- `tests/base/wcag/test_repository.py`
+- `tests/base/wcag/test_empty_extraction_behavior.py`
+- `tests/llm/test_wcag_evaluator_parse.py`
 
-`tests/base/wcag/base.py` is the orchestration layer.
+## WCAG-Architektur-Überblick
 
-Criterion-specific behavior is implemented under `tests/base/wcag/criteria/`.
+`tests/base/wcag/` ist das dedizierte WCAG-Package.
 
-Specialized behavior is delegated to focused helper modules:
+`tests/base/wcag/base.py` ist die Orchestrierungsschicht.
 
-- `tests/base/wcag/types.py`
-  - immutable data contracts and criterion config typing
-- `tests/base/wcag/reporting.py`
-  - element-level Allure rendering and failure collection
-- `tests/base/wcag/criteria/wcag_2_4_9.py`
-  - cohesive 2.4.9 extraction, destination enrichment, and evaluation flow
+Kriterienspezifisches Verhalten ist unter `tests/base/wcag/criteria/` implementiert.
+
+Spezialisiertes Verhalten wird an fokussierte Hilfsmodule delegiert:
+
+- `tests/base/wcag/types.py` — unveränderliche Datenverträge und Kriterium-Config-Typisierung
+- `tests/base/wcag/reporting.py` — element-level Allure-Rendering und Fehlersammlung
+- `tests/base/wcag/criteria/wcag_2_4_9.py` — kohäsiver 2.4.9-Extraktions-, Anreicherungs- und Bewertungsfluss
