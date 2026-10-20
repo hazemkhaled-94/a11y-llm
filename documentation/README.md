@@ -1,14 +1,14 @@
-# Documentation
+# Documentation — a11y-llm
 
-Project documentation for `a11y-llm`. Start with the root
-[README](../README.md) for setup and usage; this folder holds the deeper
-architecture, technical, and management references.
+Welcome. This documentation is organised by audience — no document is longer
+than it needs to be.
 
-| Document | Audience | Language |
+Pick your document based on your role:
+
+| Document | Audience | Contents |
 | --- | --- | --- |
-| [ARCHITECTURE.md](ARCHITECTURE.md) | Engineers, reviewers | English |
-| [TECHNICAL_DOCUMENTATION.md](TECHNICAL_DOCUMENTATION.md) | Engineers, operators | English |
-| [MANAGEMENT_DOKUMENTATION.md](MANAGEMENT_DOKUMENTATION.md) | Fach-/Projektleitung, QA, Betrieb | Deutsch |
+| [MANAGEMENT.md](MANAGEMENT.md) | Management, project owners, business stakeholders | Project purpose, value, process flow, maturity, risks, roadmap |
+| [USER_GUIDE.md](USER_GUIDE.md) | Users, QA, DevOps | Installation, configuration, test execution, Allure reporting, troubleshooting |
+| [DEVELOPER_GUIDE.md](DEVELOPER_GUIDE.md) | Developers | Architecture, code structure, extending with new pages and criteria, quality assurance |
 
-Implementation-level API and flow documentation lives next to the code, in the
-per-package `README.md` files under [`src/`](../src) and [`tests/`](../tests).
+Starting point for everyone: [main README](../README.md)

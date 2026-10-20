@@ -1,35 +1,38 @@
-# tests package
+# tests — test suite
 
-Test suite for end-to-end accessibility smoke checks.
+End-to-end accessibility smoke tests for the target application.
 
 ## Structure
 
-- `conftest.py`
-  - bridge fixture file
-  - re-exports fixtures from `tests.base.conftest`
-- `base/`
-  - shared test model, async fixture stack, WCAG smoke orchestration, managers
-  - dedicated `wcag/` package with criterion-specific modules
+- `conftest.py` — bridge fixture file; re-exports fixtures from `tests.base.conftest`
+- `base/` — shared test infrastructure, async fixture stack, WCAG smoke orchestration
+- Add app-specific smoke tests in your own folder (e.g. `<your_app>/`)
 
 ## Fixture architecture
 
 The canonical fixture setup is implemented in `tests/base/conftest.py`:
 
 - pytest hooks for logging and Allure session setup
-- session-scoped Playwright runtime, browser, and launch-args fixtures
+- session-scoped Playwright runtime, browser, and launch-arg fixtures
 - per-test context and page fixtures
 - per-test logger and WCAG criteria fixtures
 
-`tests/conftest.py` imports all base fixtures so every suite gets the same runtime stack.
+`tests/conftest.py` imports all base fixtures, so every suite gets the same runtime stack.
 
 ## Collection rule
 
-There is no class-inheritance collection gate in the active fixture stack.
-The current suite is function-based and async.
+There is no class-inheritance gate in the active fixture stack.
+The current suite is function-based and asynchronous.
 
-## Main test entry points
+## Test entry points
 
-- `tests/base/test_mars_smoke.py`
+- `tests/<your_app>/test_<page>_smoke.py` — example path for your own app-specific smoke test (browser + LLM required)
+
+## Unit tests (no browser, no LLM)
+
+- `tests/base/wcag/test_repository.py`
+- `tests/base/wcag/test_empty_extraction_behavior.py`
+- `tests/llm/test_wcag_evaluator_parse.py`
 
 ## WCAG architecture overview
 
@@ -37,13 +40,10 @@ The current suite is function-based and async.
 
 `tests/base/wcag/base.py` is the orchestration layer.
 
-Criterion-specific behavior is implemented under `tests/base/wcag/criteria/`.
+Criterion-specific behaviour is implemented under `tests/base/wcag/criteria/`.
 
-Specialized behavior is delegated to focused helper modules:
+Specialised behaviour is delegated to focused helper modules:
 
-- `tests/base/wcag/types.py`
-  - immutable data contracts and criterion config typing
-- `tests/base/wcag/reporting.py`
-  - element-level Allure rendering and failure collection
-- `tests/base/wcag/criteria/wcag_2_4_9.py`
-  - cohesive 2.4.9 extraction, destination enrichment, and evaluation flow
+- `tests/base/wcag/types.py` — immutable data contracts and criterion config typing
+- `tests/base/wcag/reporting.py` — element-level Allure rendering and failure collection
+- `tests/base/wcag/criteria/wcag_2_4_9.py` — cohesive 2.4.9 extraction, enrichment, and evaluation flow
